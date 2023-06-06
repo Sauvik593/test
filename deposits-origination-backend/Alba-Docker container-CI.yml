@@ -1,0 +1,23 @@
+name: $(date:yyyyMMdd)$(rev:.r)
+jobs:
+- job: Job_1
+  displayName: Agent job 1
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - checkout: self
+    fetchDepth: 1
+    
+  - task: AzureContainerApps@1
+    inputs:
+      appSourcePath: '$(Build.SourcesDirectory)/deposit-origination/src'
+      azureSubscription: 'alba-bank-dev (c5f3c0ab-6f08-4c09-91e0-0d5714333ee1)'
+      acrName: 'testashwin'
+      acrUsername: 'testashwin'
+      acrPassword: '04jnI+i5idPqhnAkudH2P8IGL4ayCj0P3JBYZQATb9+ACRD9NW0U'
+      dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+      imageToDeploy: 'deposits/deposit-origination-cr:latest'
+      containerAppName: 'dev-alba-uks-ca-002'
+      resourceGroup: 'dev-alba-uks-rg-001'
+      containerAppEnvironment: 'dev-alba-uks-ca-env-002'
+      targetPort: '8080'
